@@ -1,0 +1,54 @@
+{
+  "_comment": "This is a comment",
+  "builders": [
+  {
+    "type": "virtualbox-iso",
+    "headless": "false",
+    "guest_os_type": "Debian_64",
+    "iso_url": "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-9.5.0-amd64-netinst.iso", 
+    "iso_checksum": "f8446a84356a6bcbf79201cc9f46063f",
+    "iso_checksum_type": "md5",
+    "ssh_username": "vagrant",
+    "ssh_password": "vagrant",
+    "ssh_wait_timeout": "1h",
+    "shutdown_command": "sudo init 0",
+    "guest_additions_mode": "disable",
+    "boot_command": [
+      "<esc><wait>",
+      "install <wait>",
+      "{{user `preseed_url`}} <wait>",
+      "net.ifnames=0 <wait>",
+      "biosdevname=0 <wait>",
+      "debian-installer=en_US.UTF-8 <wait>",
+      "auto=true <wait>",
+      "priority=critical <wait>",
+      "locale=en_US.UTF-8 <wait>",
+      "kbd-chooser/method=us <wait>",
+      "keyboard-configuration/xkb-keymap=us <wait>",
+      "netcfg/get_hostname=template <wait>",
+      "netcfg/get_domain=mydomain.com <wait>",
+      "debconf/frontend=noninteractive <wait>",
+      "console-setup/ask_detect=false <wait>",
+      "console-keymaps-at/keymap=us <wait>",
+      "grub-installer/bootdev=/dev/sda <wait>",
+      "<enter><wait>"]
+  }],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "echo 'vagrant' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "http/config/sudoers.sh",
+        "http/config/install_chef.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "compression_level": "9",
+      "only": ["virtualbox-iso"],
+      "output": "kitchen-debian-9.5_chef14-4-18.box",
+      "keep_input_artifact": true
+     }]
+}

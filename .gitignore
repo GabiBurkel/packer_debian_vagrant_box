@@ -1,0 +1,7 @@
+packer_cache/
+*.box
+.kitchen/
+build.log
+output-virtualbox-iso/
+*.log
+checksums/

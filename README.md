@@ -4,6 +4,13 @@ Build a debian vagrant box with chef client installed so that it is testkitchen 
 
 Check and/change the debian9.json file to according to your requirements. 
 
+Then run: ./build_vagrant_box_now.sh
+
+
+... wait and watch your vagrant box being built .. 
+
+
+
 Fire up and logon to your new box like so: 
 
 * vagrant box add --name kitchen-debian-9.5_chef14-4-18 ./kitchen-debian-9.5_chef14-4-18.box
@@ -22,4 +29,16 @@ What to do with vagrant VM?
 * halt VM: vagrant halt
 * destroy box: vagrant destroy <machine-name>
 * remove box: vagrant box remove <box-name> 
+
+
+Known issues: 
+* there is no working ssh - key involved in this setup. Therefore make sure to use password authentication in kitchen. 
+Configure it like so: 
+
+driver:
+  name: vagrant
+  ssh:
+      insert_key: true
+      username: 'vagrant'
+      password: 'vagrant'
 
